@@ -1,9 +1,15 @@
-const { App } = require('@slack/bolt');
+const { App, ExpressReceiver } = require('@slack/bolt');
+const serverlessExpress = require('@vendia/serverless-express')
+
+const expressReceiver = new ExpressReceiver({
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  processBeforeResponse: true
+});
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET
+  receiver: expressReceiver
 });
 
 // Listens to incoming messages that contain "hello"
@@ -37,9 +43,6 @@ app.action('button_click', async ({ body, ack, say }) => {
   await say(`<@${body.user.id}> clicked the button`);
 });
 
-(async () => {
-  // Start your app
-  await app.start(process.env.PORT || 3000);
-
-  console.log('⚡️ Bolt app is running!');
-})();
+module.exports.handler = serverlessExpress({
+    app: expressReceiver.app
+});
