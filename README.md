@@ -10,6 +10,7 @@
 # Replace with your signing secret and token
 export SLACK_BOT_TOKEN=<your-bot-token>
 export SLACK_SIGNING_SECRET=<your-signing-secret>
+export NEW_CHANNEL=<your-notification-channel-id>
 ```
 
 ### 2. Setup your local project
