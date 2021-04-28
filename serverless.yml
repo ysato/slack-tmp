@@ -8,7 +8,6 @@ provider:
   environment:
     SLACK_SIGNING_SECRET: ${env:SLACK_SIGNING_SECRET}
     SLACK_BOT_TOKEN: ${env:SLACK_BOT_TOKEN}
-    NEW_CHANNEL: ${env:NEW_CHANNEL}
 
 functions:
   slack:
