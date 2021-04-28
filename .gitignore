@@ -1,3 +1,6 @@
 # node / npm
 node_modules/
+.idea/*
+.serverless
+.node-version
 package-lock.json
