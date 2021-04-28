@@ -51,23 +51,6 @@ app.command('/tmp', async ({ command, ack, client, respond }) => {
   await respond(`<#${result.channel.id}>`);
 });
 
-app.event('channel_created', async ({ event, client }) => {
-  if (event.channel.name.indexOf('tmp-') !== 0) {
-    return;
-  }
-
-  try {
-    await client.chat.postMessage({
-      channel: process.env.NEW_CHANNEL,
-      text: `<#${event.channel.id}>`
-    });
-  } catch (error) {
-    console.log(error);
-
-    throw new Error('Failed posting a message.')
-  }
-});
-
 module.exports.handler = serverlessExpress({
     app: expressReceiver.app
 });
