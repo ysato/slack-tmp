@@ -1,17 +1,18 @@
 {
-  "name": "bolt-js-getting-started-app",
+  "name": "slack-tmp",
   "version": "1.0.0",
-  "description": "Getting Started ⚡️ Bolt for JavaScript",
   "main": "app.js",
   "scripts": {
     "ngrok": "ngrok http 3000",
+    "local": "npx serverless offline --noPrependStageInUrl",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
   "dependencies": {
     "@slack/bolt": "^2.3.0",
-    "@vendia/serverless-express": "^4.3.4"
+    "@vendia/serverless-express": "^4.3.4",
+    "dayjs": "^1.10.4"
   },
   "devDependencies": {
     "serverless": "^2.38.0",

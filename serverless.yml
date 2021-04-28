@@ -1,6 +1,6 @@
-service: serverless-bolt-js
+service: slack-tmp
 
-frameworkVersion: '2'
+frameworkVersion: '1.0.0'
 
 provider:
   name: aws

@@ -1,3 +1,11 @@
+const dayjs = require('dayjs');
+const customParseFormat = require('dayjs/plugin/customParseFormat');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const { App, ExpressReceiver } = require('@slack/bolt');
 const serverlessExpress = require('@vendia/serverless-express')
 
@@ -12,35 +20,35 @@ const app = new App({
   receiver: expressReceiver
 });
 
-// Listens to incoming messages that contain "hello"
-app.message('hello', async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say({
-    blocks: [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": `Hey there <@${message.user}>!`
-        },
-        "accessory": {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "text": "Click Me"
-          },
-          "action_id": "button_click"
-        }
-      }
-    ],
-    text: `Hey there <@${message.user}>!`
-  });
-});
-
-app.action('button_click', async ({ body, ack, say }) => {
-  // Acknowledge the action
+app.command('/tmp', async ({ command, ack, client, respond }) => {
   await ack();
-  await say(`<@${body.user.id}> clicked the button`);
+
+  const now = dayjs().tz('Asia/Tokyo');
+
+  let result;
+  try {
+    result = await client.conversations.create({
+        name: `tmp-${now.format('YYMMDDHHmmssSSS')}`
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    throw new Error('Failed creating conversations.');
+  }
+
+  try {
+    await client.conversations.invite({
+      channel: result.channel.id,
+      users: command.user_id
+    });
+  } catch (error) {
+    console.log(error);
+
+    throw new Error('Failed inviting user.');
+  }
+
+  await respond(`<#${result.channel.id}>`);
 });
 
 module.exports.handler = serverlessExpress({
