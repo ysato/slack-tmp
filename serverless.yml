@@ -1,6 +1,6 @@
 service: slack-tmp
 
-frameworkVersion: '1.0.0'
+frameworkVersion: '2'
 
 provider:
   name: aws
